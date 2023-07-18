@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Скачать XML</title>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1>Скачать XML</h1>
+        <form action="{% url 'download_xml' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Скачать">
+        </form>
+    </div>
+</body>
+</html>
