@@ -1,5 +1,5 @@
 from django.db import models
-import xml.etree.ElementTree as ET
+from django.utils import timezone
 
 
 class Contact(models.Model):
@@ -8,3 +8,10 @@ class Contact(models.Model):
     MobileNumber = models.CharField(max_length=15, null=True, blank=True)
     OtherNumber = models.CharField(max_length=15, null=True, blank=True)
 
+
+class Call(models.Model):
+    caller = models.CharField(max_length=20)
+    receiver = models.CharField(max_length=20)
+    date = models.DateField(default=timezone.now)
+    time = models.TimeField(default=timezone.now)
+    recording = models.FileField(upload_to='recordings')

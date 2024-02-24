@@ -1,5 +1,12 @@
 from django.http import HttpResponse
-from .models import Contact
+from .models import Contact, Call
+from rest_framework import generics
+from .serializers import CallCreateSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.models import User
 
 
 def download_xml(request):
@@ -49,3 +56,8 @@ def view_xml(request):
     # Отображение XML-файла в браузере
     response = HttpResponse(xml_data, content_type='text/txt; charset=utf-8')
     return response
+
+
+class CallCreate(generics.CreateAPIView):
+    queryset = Call.objects.all()
+    serializer_class = CallCreateSerializer
