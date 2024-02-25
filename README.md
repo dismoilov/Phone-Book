@@ -29,6 +29,7 @@ git --version
 4.1 Clone Repo to server
 ```bash
 git clone https://github.com/Diyorbek-Ismoilov/Phone-Book
+cd Phone-Book/
 ```
 
 4.2.1 First, enable the EPEL repository so that we can get the components we need:
