@@ -1,2 +1,4 @@
-django
+django~=5.0.2
 django-jazzmin
+djangorestframework~=3.14.0
+requests~=2.31.0
