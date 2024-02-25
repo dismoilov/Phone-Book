@@ -8,10 +8,10 @@ class ContactAdmin(admin.ModelAdmin):
 
 
 class CallAdmin(admin.ModelAdmin):
-    list_display = ('caller', 'receiver', 'date', 'time', 'sound_display')
-    list_filter = ('caller', 'receiver', 'date')
+    list_display = ('caller', 'receiver', 'date', 'time', 'sound_display', 'status')
+    list_filter = ('caller', 'receiver', 'date', 'status')
     search_fields = ('caller', 'receiver')
-    readonly_fields = ('caller', 'receiver', 'date', 'time', 'recording', 'sound_display')
+    readonly_fields = ('caller', 'receiver', 'date', 'time', 'recording', 'sound_display', 'status')
 
     def has_change_permission(self, request, obj=None):
         return False

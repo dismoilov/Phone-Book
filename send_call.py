@@ -41,22 +41,31 @@ def send_call(caller, receiver, recording, access):
         url = 'http://127.0.0.1:8000/api/call/create/'
         files = {'recording': file}
         headers = {'Authorization': f'Bearer {access}'}
-        requests.post(url, data={'caller': caller, 'receiver': receiver}, files=files, headers=headers)
+        if len(caller) > 6 and len(receiver) < 6:
+            status = 'Inbound'
+        elif len(caller) < 6 and len(receiver) > 6:
+            status = 'Outbound'
+        else:
+            status = 'Local'
+
+        requests.post(url, data={'caller': caller, 'receiver': receiver, 'recording': recording, 'status': status},
+                      headers=headers, files=files)
 
 
 def main(caller, receiver, recording):
-    access_token = os.getenv("ACCESS_TOKEN")
+    if os.path.exists(recording):
+        access_token = os.getenv("ACCESS_TOKEN")
 
-    if access_token and verify_token(access_token):
-        send_call(caller, receiver, recording, access_token)
-    else:
-        refresh = os.getenv("REFRESH_TOKEN")
-        if refresh and verify_token(refresh):
-            access = refresh_token(refresh)
+        if access_token and verify_token(access_token):
+            send_call(caller, receiver, recording, access_token)
         else:
-            access = login('admin', 'admin')
+            refresh = os.getenv("REFRESH_TOKEN")
+            if refresh and verify_token(refresh):
+                access = refresh_token(refresh)
+            else:
+                access = login('admin', '!Qazxsw2')
 
-        send_call(caller, receiver, recording, access)
+            send_call(caller, receiver, recording, access)
 
 
 if __name__ == '__main__':

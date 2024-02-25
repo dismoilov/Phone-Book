@@ -3,6 +3,7 @@ from django.utils import timezone
 import pytz
 from django.utils.html import mark_safe
 
+
 class Contact(models.Model):
     DisplayName = models.CharField(max_length=50)
     OfficeNumber = models.CharField(max_length=10, unique=True)
@@ -11,16 +12,24 @@ class Contact(models.Model):
 
 
 class Call(models.Model):
+    STATUSES = [
+        ('Inbound', 'Входящий'),
+        ('Outbound', 'Исходящий'),
+        ('Local', 'Локальный')
+    ]
+
     caller = models.CharField(max_length=20)
     receiver = models.CharField(max_length=20)
     date = models.DateField(default=timezone.now)
     time = models.TimeField(default=timezone.now)
     recording = models.FileField(upload_to='recordings')
+    status = models.CharField(max_length=20, choices=STATUSES, null=True)
 
     @property
     def sound_display(self):
         if self.recording:
-            return mark_safe(f'<audio controls name="media"><source src="{self.recording.url}" type="audio/mpeg"></audio>')
+            return mark_safe(
+                f'<audio controls name="media"><source src="{self.recording.url}" type="audio/mpeg"></audio>')
         return ""
 
     def save(self, *args, **kwargs):
