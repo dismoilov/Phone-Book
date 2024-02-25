@@ -2,8 +2,18 @@ import os
 import requests
 from dotenv import load_dotenv
 import sys
+import wave
 
 load_dotenv()
+
+
+def get_audio_duration(file_path):
+    with wave.open(file_path, 'rb') as audio_file:
+        num_frames = audio_file.getnframes()
+        frame_rate = audio_file.getframerate()
+        duration = num_frames / frame_rate
+
+        return duration
 
 
 def verify_token(token):
@@ -53,7 +63,7 @@ def send_call(caller, receiver, recording, access):
 
 
 def main(caller, receiver, recording):
-    if os.path.exists(recording):
+    if get_audio_duration(recording) >= 3:
         access_token = os.getenv("ACCESS_TOKEN")
 
         if access_token and verify_token(access_token):
