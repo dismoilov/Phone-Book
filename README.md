@@ -65,7 +65,7 @@ exit
 
 4.3 Create a Python Virtual Environment for your Project
 ```bash
-sudo pip install virtualenv
+sudo pip3.6 install virtualenv
 virtualenv venv
 source venv/bin/activate
 ```
