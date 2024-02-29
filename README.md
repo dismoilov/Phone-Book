@@ -1,13 +1,19 @@
-## **1. Install Python 3 to CentOS of FreePBX**
+## **1. Install Python 3.11 to CentOS of FreePBX**
 
 ```bash
-yum install https://centos7.iuscommunity.org/ius-release.rpm
-yum install python36u python36u-devel python36u-pip
+sudo yum update -y
+sudo yum groupinstall "Development Tools" -y
+sudo yum install wget openssl-devel libffi-devel bzip2-devel -y
+sudo wget https://www.python.org/ftp/python/3.11.1/Python-3.11.1.tgz
+sudo tar xvf Python-3.11.1.tgz
+cd Python-3.11.1
+./configure --enable-optimizations
+sudo make altinstall
 ```
 
 Check installation:
 ```bash
-python3.6 -V
+python3.11 --version
 ```
 
 ## **2. Install Libs for sending call recordings to django server**
