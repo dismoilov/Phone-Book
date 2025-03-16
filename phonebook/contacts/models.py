@@ -11,19 +11,43 @@ class Contact(models.Model):
     OtherNumber = models.CharField(max_length=15, null=True, blank=True)
 
 
+class CallCategory(models.Model):
+    name = models.CharField(max_length=100, unique=True, verbose_name="Главная категория")
+
+    def __str__(self):
+        return self.name
+
+
+class CallSubCategory(models.Model):
+    category = models.ForeignKey(CallCategory, on_delete=models.CASCADE, related_name="subcategories",
+                                 verbose_name="Главная категория")
+    name = models.CharField(max_length=100, unique=True, verbose_name="Подкатегория")
+
+    def __str__(self):
+        return f"{self.category.name} - {self.name}"
+
+
 class Call(models.Model):
-    STATUSES = [
-        ('Inbound', 'Входящий'),
-        ('Outbound', 'Исходящий'),
-        ('Local', 'Локальный')
+    CALL_TYPES = [
+        ('incoming', 'Входящий'),
+        ('outgoing', 'Исходящий'),
+        ('local', 'Локальный'),
+        ("missed", "Missed"),
     ]
 
-    caller = models.CharField(max_length=20)
-    receiver = models.CharField(max_length=20)
-    date = models.DateField(default=timezone.now)
-    time = models.TimeField(default=timezone.now)
-    recording = models.FileField(upload_to='recordings')
-    status = models.CharField(max_length=20, choices=STATUSES, null=True)
+    call_id = models.CharField(max_length=50, unique=True, verbose_name="ID звонка")
+    caller = models.CharField(max_length=20, verbose_name="Номер звонящего")
+    receiver = models.CharField(max_length=20, verbose_name="Номер получателя")
+    call_type = models.CharField(max_length=10, choices=CALL_TYPES, verbose_name="Тип звонка")
+    duration = models.PositiveIntegerField(null=True, blank=True, verbose_name="Длительность (сек)")
+    date = models.DateField(default=timezone.now, verbose_name="Дата звонка")
+    time = models.TimeField(default=timezone.now, verbose_name="Время звонка")
+    recording = models.FileField(upload_to='recordings', null=True, blank=True, verbose_name="Запись звонка")
+    comment = models.TextField(null=True, blank=True, verbose_name="Комментарий")
+    category = models.ForeignKey(CallCategory, on_delete=models.SET_NULL, null=True, blank=True,
+                                 verbose_name="Категория")
+    subcategory = models.ForeignKey(CallSubCategory, on_delete=models.SET_NULL, null=True, blank=True,
+                                    verbose_name="Подкатегория")
 
     @property
     def sound_display(self):
@@ -36,3 +60,6 @@ class Call(models.Model):
         uzbekistan_tz = pytz.timezone('Asia/Tashkent')
         self.time = timezone.now().astimezone(uzbekistan_tz).time()
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.call_id} ({self.call_type})"

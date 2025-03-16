@@ -41,30 +41,9 @@ INSTALLED_APPS = [
     'contacts',
     'rest_framework',
     'rest_framework_simplejwt',
+    'users',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=30),
-    'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
-    'SLIDING_TOKEN_REFRESH_GRACE_PERIOD': timedelta(days=0),
-    'SLIDING_TOKEN_REFRESH_SLIDING_GRACE_PERIOD': timedelta(days=0),
-    'SLIDING_TOKEN_REFRESH_EASINESS': timedelta(days=30),
-    'ROTATE_REFRESH_TOKENS': False,
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
-    'AUTH_HEADER_TYPES': ('Bearer',),
-}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -142,6 +121,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
+
+AUTH_USER_MODEL = "users.Operator"
 
 LANGUAGE_CODE = 'ru-ru'
 
