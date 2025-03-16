@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/users/style.css">
+</head>
+<body>
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-inner">
+            <div class="login-header">
+                <h2>Авторизация</h2>
+                <h3>Войдите в аккаунт</h3>
+                <p>для доступа к приложению</p>
+            </div>
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p style="color:red">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="login-group">
+                    <input type="text" class="login-control" name="username" placeholder="Никнейм">
+                </div>
+                <div class="login-group">
+                    <input type="password" class="login-control" name="password" placeholder="Пароль">
+                </div>
+                <div class="login-btn-group">
+                    <div class="login-group">
+                        <button type="submit" class="_btn"><i class="fas fa-sign-in-alt"></i> Войти</button>
+                    </div>
+                </div>
+            </form>
+            <div class="login-footer">
+                <p>Powered by NetTech</p>
+                <p>Created by Diyorbek Ismoilov</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
